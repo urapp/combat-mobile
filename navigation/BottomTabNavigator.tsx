@@ -36,13 +36,13 @@ export default function BottomTabNavigator() {
           tabBarIcon: ({ color }) => <TabBarIcon name="md-pulse" color={color} />,
         }}
       />
-      <BottomTab.Screen
+      {/* <BottomTab.Screen
         name="Me"
         component={TabThreeNavigator}
         options={{
           tabBarIcon: ({ color }) => <TabBarIcon name="md-person" color={color} />,
         }}
-      />
+      /> */}
     </BottomTab.Navigator>
   );
 }

@@ -43,7 +43,6 @@ export default function TabOneScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome</Text>
       <Animated.View
         useNativeDriver={true}
         style={[
@@ -57,15 +56,15 @@ export default function TabOneScreen() {
         <Logo />
         </TouchableOpacity>
       </Animated.View>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
+      {/* <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <View style={styles.helpContainer}>
-      {/* <TouchableOpacity onPress={handleHelpPress} style={styles.helpLink}>
+      <TouchableOpacity onPress={handleHelpPress} style={styles.helpLink}>
         <Text style={styles.helpLinkText} lightColor={Colors.light.tint}>
           ...
         </Text>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      </View>
+      </View> */}
     </View>
   );
 }

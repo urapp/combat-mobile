@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { View } from "../components/Themed";
-import { StyleSheet, ActivityIndicator, SafeAreaView, ScrollView, RefreshControl } from "react-native";
+import { StyleSheet, ActivityIndicator, SafeAreaView } from "react-native";
 
 import RefreshButton from '../components/RefreshButton';
 import CategoryListItem from "../components/CategoryListItem";
@@ -8,8 +8,8 @@ import getEntityTypes from "./../data/getEntityTypes";
 import getCategories from "./../data/getCategories";
 
 export default function TabTwoScreen() {
-  const start = '00000000-0000-0000-0000-000000000000';
-  const [propertyId, setPropertyId] = useState(start);
+  const emptyGuid = '00000000-0000-0000-0000-000000000000';
+  const [propertyId, setPropertyId] = useState(emptyGuid);
   const [loading, setLoading] = useState(false);
   const [entityTypes, setEntityTypes] = useState({});
   const [categories, setCategories] = useState({});
@@ -17,6 +17,13 @@ export default function TabTwoScreen() {
   const getEntityTypesData = async () => {
     const entityTypesResult = await getEntityTypes();
     setEntityTypes(entityTypesResult);
+    const topEntityType = entityTypesResult.find((item) => item.rank == 0);
+    if(propertyId === emptyGuid){
+      getCategoriesData('EntityTypeId', topEntityType.id)
+    }
+    else{
+      getCategoriesData('ParentId', propertyId);
+    }
   };
 
   const getCategoriesData = async (properyName: string, propertyId: any) => {
@@ -27,12 +34,6 @@ export default function TabTwoScreen() {
   useEffect(() => {
     setLoading(true);
     getEntityTypesData();
-    if(propertyId === start){
-      getCategoriesData('EntityTypeId', '83c29baf-19a5-44ee-a883-44d9bb7b780c')
-    }
-    else{
-      getCategoriesData('ParentId', propertyId);
-    }
     setLoading(false);
   }, [propertyId]); 
 
@@ -43,7 +44,7 @@ export default function TabTwoScreen() {
   };
 
   const restart = () =>{
-    setPropertyId(start);
+    setPropertyId(emptyGuid);
   }
 
   if(Object.entries(categories).length === 0){
@@ -59,7 +60,7 @@ export default function TabTwoScreen() {
 
   return (
     <SafeAreaView style={styles.container} >
-          <ScrollView 
+          {/* <ScrollView 
             horizontal={true} 
             pagingEnabled={true}
             refreshControl={
@@ -68,15 +69,16 @@ export default function TabTwoScreen() {
                 onRefresh={restart} 
               />
             }
-          >
+          > */}
             <CategoryListItem 
-        callBack={successCallBackData}
-        categories={categories}
-        entityTypes={entityTypes}
-        loading={loading}
-      />
+              callBack={successCallBackData}
+              categories={categories}
+              entityTypes={entityTypes}
+              entityTypeId={propertyId}
+              loading={loading}
+            />
 
-          </ScrollView>
+          {/* </ScrollView> */}
         </SafeAreaView>
   );
 }
