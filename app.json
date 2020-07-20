@@ -1,7 +1,9 @@
 {
   "expo": {
     "name": "combat",
+    "description": "Martial Arts, Grades and Combat ",
     "slug": "combat",
+    "platforms": ["ios", "android"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -19,7 +21,12 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.ur.combat",
+      "buildNumber": "1.0.0"
+    },
+    "android": {
+      "package": "com.ur.combat"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"

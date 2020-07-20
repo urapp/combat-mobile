@@ -1,9 +1,11 @@
 import axios from 'axios';
-import {API_URL} from '../env.json';
+import {API_URL, TOKEN} from './../env.json';
 
 const getCategories = async (propertyName :string, propertyId :any) =>{
   const url = `${API_URL}/api/Categories/${propertyName}/${propertyId}`;
+  const token = TOKEN;
   const data = await axios.get(url, {
+      headers: {"Authorization" : `Bearer ${token}`},
       withCredentials: true,
     })
     .then((response) => {

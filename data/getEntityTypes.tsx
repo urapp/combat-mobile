@@ -1,9 +1,11 @@
 import axios from 'axios';
-import {API_URL} from './../env.json';
+import {API_URL, TOKEN} from './../env.json';
 
 const getEntityTypes = async () =>{
   const url = `${API_URL}/api/EntityTypes`;
+  const token = TOKEN;
   const data = await axios.get(url, {
+      headers: {"Authorization" : `Bearer ${token}`},
       withCredentials: true,
     })
     .then((response) => {
