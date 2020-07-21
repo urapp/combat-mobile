@@ -31,8 +31,8 @@ const CategoryListItem = (props) => {
     return <ActivityIndicator size="large" />
   }
 
-  const entityTypeId = props.categories[0]?.entityTypeId;
-  const lastEntityType = props.entityTypes.find((item) => item.rank == 2).id;
+  const entityTypeId = props.categories.slice(-1)[0]?.entityTypeId;
+  const lastEntityType = props.entityTypes.sort((a, b) => a.rank - b.rank).slice(-1)[0].id;
   const entityName = props.entityTypes.find((item) => item.id == entityTypeId).name;
 
 

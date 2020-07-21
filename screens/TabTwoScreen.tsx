@@ -16,10 +16,12 @@ export default function TabTwoScreen() {
 
   const getEntityTypesData = async () => {
     const entityTypesResult = await getEntityTypes();
-    setEntityTypes(entityTypesResult);
-    const topEntityType = entityTypesResult.find((item) => item.rank == 0);
+    setEntityTypes(entityTypesResult.sort((a, b) => a.rank - b.rank));
+    console.log("ORDER: ", entityTypesResult.sort((a, b) => a.rank - b.rank));
+    const topEntityType = entityTypesResult.sort((a, b) => a.rank - b.rank)[0];
+    console.log("topEntityType: ", topEntityType);
     if(propertyId === emptyGuid){
-      getCategoriesData('EntityTypeId', topEntityType.id)
+      getCategoriesData('EntityTypeId', topEntityType?.id)
     }
     else{
       getCategoriesData('ParentId', propertyId);
@@ -28,7 +30,7 @@ export default function TabTwoScreen() {
 
   const getCategoriesData = async (properyName: string, propertyId: any) => {
     const categoriesResult = await getCategories(properyName, propertyId);
-    setCategories(categoriesResult);
+    setCategories(categoriesResult.sort((a, b) => a.rank - b.rank));
   };
 
   useEffect(() => {
