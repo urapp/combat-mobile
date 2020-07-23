@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
 import * as React from 'react';
+import { StyleSheet } from "react-native";
 
 import Colors from '../constants/Colors';
 import useColorScheme from '../hooks/useColorScheme';
@@ -11,13 +12,12 @@ import TabThreeScreen from '../screens/TabThreeScreen';
 import { BottomTabParamList, TabOneParamList, TabTwoParamList, TabThreeParamList } from '../types';
 
 import Icon from "./../components/Icon";
-//import RefreshButton from '../components/RefreshButton';
+import BackButton from '../components/BackButton';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
 export default function BottomTabNavigator() {
   const colorScheme = useColorScheme();
-
   return (
     <BottomTab.Navigator
       initialRouteName="Home"
@@ -83,7 +83,11 @@ function TabTwoNavigator() {
         options={{
           headerTitle: 'Combat',
           headerLeft: () => (<Icon/>),
-          //headerRight: () => (<RefreshButton/>),
+          // headerRight: () => (<BackButton 
+          //   callBack={successCallBack} 
+          //   name={'Back'}
+          //   style={styles.backButton}
+          // />),
         }}
       />
     </TabTwoStack.Navigator>

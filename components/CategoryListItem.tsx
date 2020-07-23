@@ -1,13 +1,10 @@
 import React, { useState } from "react";
-import { View, Text, Image, StyleSheet, ActivityIndicator, RefreshControl} from 'react-native';
+import { View, Text, StyleSheet, ActivityIndicator, RefreshControl} from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import {API_URL} from './../env.json';
 
 import CategoryButton from './CategoryButton';
 import CategoryImage from './CategoryImage';
-
-import ImageSlider from 'react-native-image-slider';
-import Carousel from './carousel';
 
 const CategoryListItem = (props) => {
   const emptyGuidObj = {id:'00000000-0000-0000-0000-000000000000'};
@@ -100,6 +97,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontSize: 20,
     fontWeight: "bold",
+    marginTop: 5
   },
   scrollView: {
     flex: 1,
