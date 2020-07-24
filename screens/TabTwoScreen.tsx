@@ -14,8 +14,6 @@ export default function TabTwoScreen({ navigation }) {
   const [entityTypes, setEntityTypes] = useState({});
   const [categories, setCategories] = useState({});
   const [theArray, setTheArray] = useState([]);
-  const [back, setBack] = useState(false);
-  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     navigation.setOptions({
@@ -30,7 +28,7 @@ export default function TabTwoScreen({ navigation }) {
       ),
     });
     console.log("theArray: ", theArray);
-  }, [theArray, back, refresh]);
+  }, [theArray]);
 
   useEffect(() => {
     setLoading(true);
@@ -43,36 +41,35 @@ export default function TabTwoScreen({ navigation }) {
     const entityTypesResult = await getEntityTypes();
     setEntityTypes(entityTypesResult.sort((a, b) => a.rank - b.rank));
     const topEntityType = entityTypesResult.sort((a, b) => a.rank - b.rank)[0];
-    if(back){
+    
+    if(propertyId === emptyGuid){
       console.log("1 --------------------------");
-      getCategoriesData('EntityTypeId', propertyId);
-    }
-    else if(propertyId === emptyGuid){
-      console.log("2 --------------------------");
       getCategoriesData('EntityTypeId', topEntityType?.id);
     }
     else{
-      console.log("3 --------------------------");
+      console.log("2 --------------------------");
       getCategoriesData('ParentId', propertyId);
     }
+    console.log("getEntityTypesData - theArray.length: ", theArray.length);
   };
 
   const getCategoriesData = async (properyName: string, propertyId: any) => {
-    const categoriesResult = await getCategories(properyName, propertyId);
-    if(!back && !refresh && categories[0]?.entityTypeId !== undefined){
-      setTheArray(theArray => [...theArray, categories[0]?.entityTypeId]);
-    }
-    setBack(false);
-    setRefresh(false);
-    setCategories(categoriesResult.sort((a, b) => a.rank - b.rank));
+    let categoriesResult = await getCategories(properyName, propertyId);
+    categoriesResult = categoriesResult.sort((a, b) => a.rank - b.rank);
+    setCategories(categoriesResult);
+
+    console.log("getCategoriesData - theArray.length: ", theArray.length);
   };
 
   const successCallBackData = (data) => {
-    console.log("data: ", data);
     if(Object.entries(data).length > 0){
       if(data.id === emptyGuid){
-        setRefresh(true);
-        setTheArray(theArray.filter((e)=>(e === emptyGuid)));
+        console.log("setTheArray([])");
+        setTheArray([]);
+      }
+      else{
+        console.log("setTheArray(theArray => [...theArray, data?.id])");
+        setTheArray(theArray => [...theArray, data?.id]);
       }
       setPropertyId(data?.id);
     }
@@ -80,11 +77,15 @@ export default function TabTwoScreen({ navigation }) {
 
   const backButtonClick = () => {
     console.log("theArray.slice(-1)[0]: ", theArray.slice(-1)[0]);
-    setTheArray(theArray.filter((e)=>(e === emptyGuid)));
-    setBack(true);
     let lastBack = theArray.slice(-1)[0];
-    setPropertyId(lastBack);
+    let newarray = theArray.filter((e)=>(e !== lastBack));
+    let lastInArray = newarray.slice(-1)[0];
     setTheArray(theArray.filter((e)=>(e !== lastBack)));
+    if(lastInArray === undefined){
+      setPropertyId(emptyGuid);
+      return;
+    }
+    setPropertyId(lastInArray);
   };
 
   if(Object.entries(categories).length === 0){
