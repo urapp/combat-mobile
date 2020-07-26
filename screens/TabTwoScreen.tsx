@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { View } from "../components/Themed";
-import { StyleSheet, ActivityIndicator, SafeAreaView } from "react-native";
+import { StyleSheet, ActivityIndicator, SafeAreaView, Alert, BackHandler } from "react-native";
 
 import BackButton from '../components/BackButton';
 import CategoryListItem from "../components/CategoryListItem";
 import getEntityTypes from "./../data/getEntityTypes";
 import getCategories from "./../data/getCategories";
+import backButtonImage from "../assets/images/backButton.png";
 
 export default function TabTwoScreen({ navigation }) {
   const emptyGuid = '00000000-0000-0000-0000-000000000000';
@@ -20,21 +21,32 @@ export default function TabTwoScreen({ navigation }) {
       headerRight: () => (
         theArray.length > 0 &&
         <BackButton
-        callBack={backButtonClick} 
-        name={' ← '}
+        callBack={backButtonClick}
+        image={backButtonImage}
         refresh={false}
         style={styles.backButton}
       />
       ),
     });
-    console.log("theArray: ", theArray);
+    if(theArray.length > 0){
+      const backAction = () => {
+        backButtonClick();
+        return true;
+      };
+  
+      const backHandler = BackHandler.addEventListener(
+        "hardwareBackPress",
+        backAction
+      );
+  
+      return () => backHandler.remove();
+    }
   }, [theArray]);
 
   useEffect(() => {
     setLoading(true);
     getEntityTypesData();
-    setLoading(false);
-    console.log(theArray);    
+    setLoading(false);   
   }, [propertyId]);
 
   const getEntityTypesData = async () => {
@@ -43,32 +55,25 @@ export default function TabTwoScreen({ navigation }) {
     const topEntityType = entityTypesResult.sort((a, b) => a.rank - b.rank)[0];
     
     if(propertyId === emptyGuid){
-      console.log("1 --------------------------");
       getCategoriesData('EntityTypeId', topEntityType?.id);
     }
     else{
-      console.log("2 --------------------------");
       getCategoriesData('ParentId', propertyId);
     }
-    console.log("getEntityTypesData - theArray.length: ", theArray.length);
   };
 
   const getCategoriesData = async (properyName: string, propertyId: any) => {
     let categoriesResult = await getCategories(properyName, propertyId);
     categoriesResult = categoriesResult.sort((a, b) => a.rank - b.rank);
     setCategories(categoriesResult);
-
-    console.log("getCategoriesData - theArray.length: ", theArray.length);
   };
 
   const successCallBackData = (data) => {
     if(Object.entries(data).length > 0){
       if(data.id === emptyGuid){
-        console.log("setTheArray([])");
         setTheArray([]);
       }
       else{
-        console.log("setTheArray(theArray => [...theArray, data?.id])");
         setTheArray(theArray => [...theArray, data?.id]);
       }
       setPropertyId(data?.id);
@@ -76,7 +81,6 @@ export default function TabTwoScreen({ navigation }) {
   };
 
   const backButtonClick = () => {
-    console.log("theArray.slice(-1)[0]: ", theArray.slice(-1)[0]);
     let lastBack = theArray.slice(-1)[0];
     let newarray = theArray.filter((e)=>(e !== lastBack));
     let lastInArray = newarray.slice(-1)[0];
@@ -93,13 +97,7 @@ export default function TabTwoScreen({ navigation }) {
       <>
         <View style={styles.container}>
           <ActivityIndicator size="large" />
-        </View>        
-        <BackButton 
-          style={styles.refreshButton} 
-          callBack={successCallBackData} 
-          name={'Refresh'}
-          refresh={true}
-        />
+        </View>
       </>
     )
   }
