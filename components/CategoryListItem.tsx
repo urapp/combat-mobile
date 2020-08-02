@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, ActivityIndicator, RefreshControl} from 'react-native';
+import { View, Image, Text, StyleSheet, ActivityIndicator, RefreshControl, Modal, Dimensions} from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import {API_URL} from './../env.json';
 
@@ -32,31 +32,40 @@ const CategoryListItem = (props) => {
   const lastEntityType = props.entityTypes.sort((a, b) => a.rank - b.rank).slice(-1)[0].id;
   const entityName = props.entityTypes.find((item) => item.id == entityTypeId).name;
 
-
   if(entityTypeId === lastEntityType){
+    const images = [];
     const urlImages = `${API_URL}/Resources/Images/`;
-    const images = Object.keys(props.categories).map(key => urlImages + props.categories[key].image);
+     Object.keys(props.categories).map( (key, index) => 
+      images.push(
+        { key:index.toString(), 
+          url:urlImages + props.categories[key].image,
+          name:props.categories[key].name,
+          description:props.categories[key].description}
+      )
+    );
     return(
+        
         <View style={styles.container} >
           <FlatList
-          refreshControl={
-            <RefreshControl 
-              refreshing={loading}
-              onRefresh={refhresing} 
-            />
-          }
-          data={props.categories}
+          // refreshControl={
+          //   <RefreshControl 
+          //     refreshing={loading}
+          //     onRefresh={refhresing} 
+          //   />
+          // }
+          data={images}
+          scrollEnabled={true}
           horizontal={true}
           showsHorizontalScrollIndicator={true}
           pagingEnabled
           decelerationRate='fast'
-          scrollEventThrottle={200}
           renderItem={({item}) => {
             return(
               <CategoryImage
                 callBack={successCallBackData}
-                category={item}
-              />
+                url={item.url}
+                description={item.description}
+              />                
             )
           }}
         />
@@ -75,6 +84,7 @@ const CategoryListItem = (props) => {
             />
           }
           data={props.categories}
+          style={styles.flatList}
           renderItem={({item}) => {
             return(
               <CategoryButton
@@ -99,10 +109,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginTop: 5
   },
-  scrollView: {
+  flatList: {
     flex: 1,
-    display: "flex"
-},
-  });
+  },
+});
 
 export default CategoryListItem;
