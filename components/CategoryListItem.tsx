@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Image, Text, StyleSheet, ActivityIndicator, RefreshControl, Modal, Dimensions} from 'react-native';
+import { Text, View, StyleSheet, ActivityIndicator, RefreshControl} from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import {API_URL} from './../env.json';
 
@@ -37,8 +37,8 @@ const CategoryListItem = (props) => {
     const urlImages = `${API_URL}/Resources/Images/`;
      Object.keys(props.categories).map( (key, index) => 
       images.push(
-        { key:index.toString(), 
-          url:urlImages + props.categories[key].image,
+        { key:props.categories[key].id,
+          url:urlImages + props.categories[key].id +".jpg",
           name:props.categories[key].name,
           description:props.categories[key].description}
       )
@@ -47,13 +47,8 @@ const CategoryListItem = (props) => {
         
         <View style={styles.container} >
           <FlatList
-          // refreshControl={
-          //   <RefreshControl 
-          //     refreshing={loading}
-          //     onRefresh={refhresing} 
-          //   />
-          // }
           data={images}
+          removeClippedSubviews={true}
           scrollEnabled={true}
           horizontal={true}
           showsHorizontalScrollIndicator={true}
@@ -63,8 +58,7 @@ const CategoryListItem = (props) => {
             return(
               <CategoryImage
                 callBack={successCallBackData}
-                url={item.url}
-                description={item.description}
+                item={item}
               />                
             )
           }}
@@ -85,11 +79,12 @@ const CategoryListItem = (props) => {
           }
           data={props.categories}
           style={styles.flatList}
-          renderItem={({item}) => {
+          renderItem={({item, index}) => {
             return(
               <CategoryButton
                 callBack={successCallBackData}
                 category={item}
+                index={index}
               />
             )
           }}

@@ -9,7 +9,6 @@ const getEntityTypes = async () =>{
       withCredentials: true,
     })
     .then((response) => {
-      //console.log("getEntityTypes: ", response?.data);
       return response?.data;
     })
     .catch((error) => {

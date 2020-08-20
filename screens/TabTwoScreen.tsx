@@ -7,6 +7,7 @@ import CategoryListItem from "../components/CategoryListItem";
 import getEntityTypes from "./../data/getEntityTypes";
 import getCategories from "./../data/getCategories";
 import backButtonImage from "../assets/images/backButton.png";
+import {CacheManager} from "react-native-expo-image-cache";
 
 export default function TabTwoScreen({ navigation }) {
   const emptyGuid = '00000000-0000-0000-0000-000000000000';
@@ -40,6 +41,9 @@ export default function TabTwoScreen({ navigation }) {
       );
   
       return () => backHandler.remove();
+    }
+    else{
+      CacheManager.clearCache();
     }
   }, [theArray]);
 

@@ -43,19 +43,7 @@ export default function TabOneScreen() {
 
   return (
     <View style={styles.container}>
-      <Animated.View
-        useNativeDriver={true}
-        style={[
-          styles.fadingContainer,
-          {
-            opacity: fadeAnim
-          }
-        ]}
-      >
-        <TouchableOpacity onPress={applyFadInFadeOutEffect}>
-        <Logo />
-        </TouchableOpacity>
-      </Animated.View>
+      <Logo />
       {/* <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       <View style={styles.helpContainer}>
       <TouchableOpacity onPress={handleHelpPress} style={styles.helpLink}>

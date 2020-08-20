@@ -9,7 +9,6 @@ const getCategories = async (propertyName :string, propertyId :any) =>{
       withCredentials: true,
     })
     .then((response) => {
-      //console.log("getCategories: ", response?.data);
       return response?.data;
     })
     .catch((error) => {
