@@ -12,7 +12,6 @@ import TabThreeScreen from '../screens/TabThreeScreen';
 import { BottomTabParamList, TabOneParamList, TabTwoParamList, TabThreeParamList } from '../types';
 
 import Icon from "./../components/Icon";
-import BackButton from '../components/BackButton';
 
 const BottomTab = createBottomTabNavigator<BottomTabParamList>();
 
@@ -65,7 +64,6 @@ function TabOneNavigator() {
         component={TabOneScreen}
         options={{ 
           headerTitle: 'Home',
-          headerLeft: () => (<Icon/>),
         }}
       />
     </TabOneStack.Navigator>
@@ -82,12 +80,6 @@ function TabTwoNavigator() {
         component={TabTwoScreen}
         options={{
           headerTitle: 'Combat',
-          headerLeft: () => (<Icon/>),
-          // headerRight: () => (<BackButton 
-          //   callBack={successCallBack} 
-          //   name={'Back'}
-          //   style={styles.backButton}
-          // />),
         }}
       />
     </TabTwoStack.Navigator>
@@ -104,7 +96,6 @@ function TabThreeNavigator() {
         component={TabThreeScreen}
         options={{ 
           headerTitle: 'Me',
-          headerLeft: () => (<Icon/>),
         }}
       />
     </TabThreeStack.Navigator>

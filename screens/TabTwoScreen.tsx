@@ -7,6 +7,8 @@ import CategoryListItem from "../components/CategoryListItem";
 import getEntityTypes from "./../data/getEntityTypes";
 import getCategories from "./../data/getCategories";
 import backButtonImage from "../assets/images/backButton.png";
+import Icon from "./../components/Icon";
+import IconImage from "../assets/images/icon.png";
 import {CacheManager} from "react-native-expo-image-cache";
 
 export default function TabTwoScreen({ navigation }) {
@@ -22,10 +24,18 @@ export default function TabTwoScreen({ navigation }) {
       headerRight: () => (
         theArray.length > 0 &&
         <BackButton
-        callBack={backButtonClick}
-        image={backButtonImage}
-        refresh={false}
-        style={styles.backButton}
+          callBack={backButtonClick}
+          image={backButtonImage}
+          refresh={false}
+          style={styles.backButton}
+      />
+      ),
+      headerLeft: () => (
+        <Icon
+          callBack={successCallBackData}
+          image={IconImage}
+          refresh={true}
+          style={styles.backButton}
       />
       ),
     });

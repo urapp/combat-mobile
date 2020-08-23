@@ -10,37 +10,6 @@ import Logo from './../components/Logo';
 
 export default function TabOneScreen() {
 
-  const [effect, setEffect] = useState(1);
-
-  const fadeAnim = useRef(new Animated.Value(effect)).current;
-
-  const fadeInOut = () => {
-    // Will change fadeAnim value to 0 in 5 seconds
-    Animated.timing(fadeAnim, {
-      toValue: effect,
-      duration: 2000,
-      useNativeDriver: true, 
-    }).start();
-  };
-
-  const applyFadInFadeOutEffect = () => {
-    if(effect === 0){
-      fadeInOut();
-      setEffect(1);
-    }
-    else{
-      fadeInOut();
-      setEffect(0);
-      setTimeout(function(){
-        applyFadInFadeOutEffect();
-      }, 2000);
-    }
-  }
-
-  useEffect(() => {
-    applyFadInFadeOutEffect();
-  }, []);
-
   return (
     <View style={styles.container}>
       <Logo />
